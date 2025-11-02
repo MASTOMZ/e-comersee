@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pesanan Berhasil - GOMIGO</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f5f0;
+      color: #5a3210;
+      text-align: center;
+      margin: 0;
+      padding: 40px;
+    }
+    h1 {
+      color: #6b3e26;
+    }
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 80%;
+      max-width: 600px;
+    }
+    td {
+      border-bottom: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    strong {
+      color: #6b3e26;
+    }
+    .status {
+      background-color: #fff5e6;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 25px;
+      background-color: #8b4513;
+      color: white;
+      text-decoration: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+    }
+    .btn:hover {
+      background-color: #a0522d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Yeyyy pesanan Anda berhasil dibuat!</h1>
+  <hr style="width: 60%;">
+
+  <table>
+    <tr><td><strong>Nama</strong></td><td id="nama">-</td></tr>
+    <tr><td><strong>Email</strong></td><td id="email">-</td></tr>
+    <tr><td><strong>Alamat</strong></td><td id="alamat">-</td></tr>
+    <tr><td><strong>Nomor Telepon</strong></td><td id="telepon">-</td></tr>
+    <tr><td><strong>Pembayaran</strong></td><td id="pembayaran">-</td></tr>
+    <tr><td><strong>Pesanan</strong></td><td id="pesanan">-</td></tr>
+  </table>
+
+  <div class="status">📦 <strong>Status Pesanan:</strong> Pesanan sedang disiapkan</div>
+
+  <br><a href="beranda.html" class="btn">Kembali</a>
+
+  <script>
+    const data = JSON.parse(localStorage.getItem('orderData'));
+    if (data) {
+      document.getElementById('nama').textContent = data.name;
+      document.getElementById('email').textContent = data.email;
+      document.getElementById('alamat').textContent = data.address;
+      document.getElementById('telepon').textContent = data.phone;
+      document.getElementById('pembayaran').textContent = data.payment;
+      document.getElementById('pesanan').textContent = `${data.quantity} x ${data.product} (Rp${Number(data.price).toLocaleString('id-ID')})`;
+    }
+  </script>
+</body>
+</html>

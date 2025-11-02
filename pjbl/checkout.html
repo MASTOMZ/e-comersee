@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - GOMIGO</title>
+  <link rel="stylesheet" href="style checkout.css" />
+</head>
+<body>
+  <div class="checkout-container">
+    <header>Checkout</header>
+
+    <!-- IDENTITAS -->
+    <div class="section">
+      <label for="name">Nama Penerima</label>
+      <input type="text" id="name" placeholder="Masukkan nama Anda" />
+      
+      <label for="Email">Email</label>
+      <input type="text" id="Email" placeholder="Masukkan Email anda" />
+
+      <label for="address">Alamat Lengkap</label>
+      <textarea id="address" rows="3" placeholder="Masukkan alamat pengiriman"></textarea>
+
+      <label for="phone">Nomor Telepon / WhatsApp</label>
+      <input type="text" id="phone" placeholder="Masukkan nomor telepon" />
+    </div>
+
+    <!-- BARANG -->
+    <div class="section">
+      <label for="product">Nama Produk</label>
+      <input type="text" id="product" readonly />
+
+      <label for="quantity">Jumlah</label>
+      <input type="number" id="quantity" placeholder="Jumlah barang" />
+
+      <label for="price">Harga per Item (Rp)</label>
+      <input type="number" id="price" readonly />
+    </div>
+
+    <!-- METODE PEMBAYARAN -->
+    <div class="section">
+      <label for="payment">Metode Pembayaran</label>
+      <select id="payment">
+        <option value="">-- Pilih Metode Pembayaran --</option>
+        <option value="COD (Bayar di Tempat)">COD (Bayar di Tempat)</option>
+        <option value="Transfer Bank">Transfer Bank</option>
+        <option value="Dana">Dana</option>
+        <option value="Gopay">Gopay</option>
+        <option value="ShopeePay">ShopeePay</option>
+      </select>
+    </div>
+
+    <!-- HITUNG -->
+    <div class="summary">
+      <div><span>Subtotal</span><span id="subtotal">Rp0</span></div>
+      <div><span>Ongkir</span><span id="shipping">Rp0</span></div>
+      <div><strong>Total</strong><strong id="total">Rp0</strong></div>
+
+      <button onclick="calculateTotal()">Hitung Total</button>
+      <button class="btn-wa" id="waButton" onclick="bayar()">Bayar Sekarang</button>
+    </div>
+  </div>
+
+  <div class="notif" id="notif">✅ Terima kasih! Pesanan kamu sedang diproses.</div>
+
+  <script>
+    // Ambil parameter dari URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const namaProduk = urlParams.get("nama");
+    const hargaProduk = urlParams.get("harga");
+    const jumlahProduk = urlParams.get("jumlah");
+
+    if (namaProduk) document.getElementById("product").value = namaProduk;
+    if (hargaProduk) document.getElementById("price").value = hargaProduk;
+    if (jumlahProduk) document.getElementById("quantity").value = jumlahProduk;
+
+    if (hargaProduk && jumlahProduk) {
+      calculateTotal();
+    }
+
+    function calculateTotal() {
+      const price = Number(document.getElementById('price').value) || 0;
+      const qty = Number(document.getElementById('quantity').value) || 0;
+      const subtotal = price * qty;
+      const shipping = subtotal > 0 ? 3000 : 0;
+      const total = subtotal + shipping;
+
+      document.getElementById('subtotal').textContent = `Rp${subtotal.toLocaleString('id-ID')}`;
+      document.getElementById('shipping').textContent = `Rp${shipping.toLocaleString('id-ID')}`;
+      document.getElementById('total').textContent = `Rp${total.toLocaleString('id-ID')}`;
+    }
+
+    function bayar() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('Email').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const payment = document.getElementById('payment').value.trim();
+      const product = document.getElementById('product').value.trim();
+      const quantity = document.getElementById('quantity').value.trim();
+      const price = document.getElementById('price').value.trim();
+
+      if (!name || !email || !address || !phone || !payment) {
+        alert('⚠️ Harap isi semua data pengiriman terlebih dahulu!');
+        return;
+      }
+
+      // Simpan data ke localStorage
+      const orderData = { name, email, address, phone, payment, product, quantity, price };
+      localStorage.setItem('orderData', JSON.stringify(orderData));
+
+      // Arahkan ke halaman informasi
+      window.location.href = 'informasi.html';
+    }
+  </script>
+</body>
+</html>

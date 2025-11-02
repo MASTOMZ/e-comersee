@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Kami - COMIGO</title>
+  <link rel="stylesheet" href="menu.css" />
+</head>
+<body>
+  <section id="menu" class="menu-section">
+    <h2>Menu Kami</h2>
+    <p>Pilih menu favoritmu dan langsung pesan!</p>
+
+    <!-- Tombol tambah menu -->
+    <div class="text-center mb-4">
+      <button class="btn-tambah" onclick="tampilkanForm()">+ Tambah Menu</button>
+    </div>
+
+    <!-- Form tambah menu -->
+    <div id="formTambahMenu" class="form-tambah" style="display: none;">
+      <input type="text" id="namaMenu" placeholder="Nama menu" required>
+      <input type="number" id="hargaMenu" placeholder="Harga (Rp)" required>
+      <input type="url" id="gambarMenu" placeholder="URL Gambar" required>
+      <button class="btn-simpan" onclick="tambahMenu()">Simpan</button>
+    </div>
+
+    <!-- Daftar Menu -->
+    <div class="menu-container" id="menuContainer">
+      <div class="menu-item">
+        <img src="img/271610209-683009639528177-3577032693846942392-n-f86cce9f67ab87e1f2714ff01fb5315e-f1f2c5365f8750a18bb88ef3e8d9aa5c_600x400.jpg" alt="Martabak Mini">
+        <h3>Martabak Mini</h3>
+        <p class="harga">Rp 3.000 / pcs</p>
+        <a href="checkout.html?nama=Martabak%20Mini&harga=3000&jumlah=1" class="btn-bayar">BELI</a>
+      </div>
+
+      <div class="menu-item">
+        <img src="img/1240786-1000xauto-resep-pisang-cokelat.jpg" alt="Pisang Coklat">
+        <h3>Pisang Coklat</h3>
+        <p class="harga">Rp 3.000 / pcs</p>
+        <a href="checkout.html?nama=Pisang%20Coklat&harga=3000&jumlah=1" class="btn-bayar">BELI</a>
+      </div>
+
+      <div class="menu-item">
+        <img src="img/1690687194462395-sosisbakar-1.jpg" alt="Sosis Bakar">
+        <h3>Sosis Bakar</h3>
+        <p class="harga">Rp 8.000</p>
+        <a href="checkout.html?nama=Sosis%20Bakar&harga=8000&jumlah=1" class="btn-bayar">BELI</a>
+      </div>
+
+      <div class="menu-item">
+        <img src="img/kebab-mini-praktis-dari-kulit-lumpia-foto-resep-utama.jpg" alt="Kebab Mini">
+        <h3>Kebab Mini</h3>
+        <p class="harga">Rp 10.000</p>
+        <a href="checkout.html?nama=Kebab%20Mini&harga=10000&jumlah=1" class="btn-bayar">BELI</a>
+      </div>
+
+      <div class="menu-item">
+        <img src="img/steak-21.jpg" alt="Roti Bakar">
+        <h3>Roti Bakar</h3>
+        <p class="harga">Rp 12.000</p>
+        <a href="checkout.html?nama=Roti%20Bakar&harga=12000&jumlah=1" class="btn-bayar">BELI</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const menuContainer = document.getElementById('menuContainer');
+    const form = document.getElementById('formTambahMenu');
+
+    // Tampilkan/Sembunyikan form tambah menu
+    function tampilkanForm() {
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Tambah menu baru
+    function tambahMenu() {
+      const nama = document.getElementById('namaMenu').value.trim();
+      const harga = document.getElementById('hargaMenu').value.trim();
+      const gambar = document.getElementById('gambarMenu').value.trim();
+
+      if (!nama || !harga || !gambar) {
+        alert('Semua kolom harus diisi!');
+        return;
+      }
+
+      const newItem = { nama, harga, gambar };
+      let customMenus = JSON.parse(localStorage.getItem('customMenus')) || [];
+      customMenus.push(newItem);
+      localStorage.setItem('customMenus', JSON.stringify(customMenus));
+      renderMenu();
+
+      document.getElementById('namaMenu').value = '';
+      document.getElementById('hargaMenu').value = '';
+      document.getElementById('gambarMenu').value = '';
+      form.style.display = 'none';
+    }
+
+    // Render menu dari localStorage
+    function renderMenu() {
+      const savedMenus = JSON.parse(localStorage.getItem('customMenus')) || [];
+      const existingMenus = document.querySelectorAll('.menu-item.custom');
+      existingMenus.forEach(m => m.remove());
+
+      savedMenus.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.classList.add('menu-item', 'custom');
+        div.innerHTML = `
+          <img src="${item.gambar}" alt="${item.nama}">
+          <h3>${item.nama}</h3>
+          <p class="harga">Rp ${Number(item.harga).toLocaleString()}</p>
+          <a href="checkout.html?nama=${encodeURIComponent(item.nama)}&harga=${item.harga}&jumlah=1" class="btn-bayar">BELI</a>
+          <button class="btn-hapus" onclick="hapusMenu(${index})">Hapus</button>
+        `;
+        menuContainer.appendChild(div);
+      });
+    }
+
+    // Hapus menu
+    function hapusMenu(index) {
+      if (!confirm('Yakin ingin menghapus menu ini?')) return;
+      let customMenus = JSON.parse(localStorage.getItem('customMenus')) || [];
+      customMenus.splice(index, 1);
+      localStorage.setItem('customMenus', JSON.stringify(customMenus));
+      renderMenu();
+    }
+
+    // Load menu saat halaman dibuka
+    renderMenu();
+  </script>
+<style>
+  .menu-section {
+  background-color: #fff;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.menu-section h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.menu-section p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 40px;
+}
+
+.menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.menu-item {
+  background-color: #fafafa;
+  border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  padding: 20px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+}
+
+.menu-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+.menu-item img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.menu-item h3 {
+  margin: 10px 0 5px 0;
+  font-size: 1.3rem;
+  color: #222;
+}
+
+.menu-item .harga {
+  font-weight: bold;
+  color: #ff6b6b;
+  margin-bottom: 15px;
+}
+
+.btn-bayar {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #25d366;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-bayar:hover {
+  background-color: #1ebe5d;
+}
+
+/* Tombol tambah menu */
+.btn-tambah {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-tambah:hover {
+  background-color: #e68900;
+}
+
+/* Form tambah menu */
+.form-tambah {
+  max-width: 400px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-tambah input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.btn-simpan {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-simpan:hover {
+  background-color: #43a047;
+}
+
+/* Tombol hapus menu */
+.btn-hapus {
+  margin-top: 10px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-hapus:hover {
+  background-color: #c0392b;
+}
+</style>
+</body>
+</html>

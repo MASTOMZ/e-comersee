@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Toko COMIGO</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" crossorigin="anonymous">
+
+  <!-- AOS CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+
+  <!-- CSS Custom -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+        <div class="logo">Toko COMIGO</div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="#beranda">Beranda</a></li>
+            <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+            <li class="nav-item"><a class="nav-link" href="#Tentang">Tentang Kami</a></li>
+            <li class="nav-item">
+              <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Beranda -->
+  <div id="beranda" class="hero">
+    <h1 data-aos="fade-up" data-aos-duration="3000">Selamat Datang di Toko COMIGO</h1>
+    <p data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
+      Nikmati makanan lezat, segar, dan terjangkau setiap hari
+    </p>
+    <a href="menu.html" class="btn">Lihat Menu</a>
+  </div>
+
+  <div class="section-info text-center my-4">
+    <h2 data-aos="fade-down" data-aos-duration="1500">Menu Toko COMIGO</h2>
+    <p data-aos="fade-down" data-aos-duration="1500">Pilih makanan favorit Anda!</p>
+  </div>
+
+  <!-- Tentang Kami -->
+  <div class="Tentang container-fluid bg-white py-5" id="Tentang">
+    <div class="container text-center">
+      <h3 class="display-5" data-aos="fade-up" data-aos-duration="1000"><strong>Tentang Kami</strong></h3>
+      <p data-aos="fade-up" data-aos-duration="1000">
+        Kami adalah toko makanan yang menyajikan hidangan lezat dan terjangkau. Semua menu dibuat dengan bahan berkualitas tinggi dan rasa yang autentik.
+      </p>
+    </div>
+  </div>
+
+  <!-- Kontak -->
+  <section id="kontak" class="py-5 bg-light text-center">
+    <h2>My<span style="color: #ff9800;">KONTAK</span></h2>
+    <p>HUBUNGI KONTAK KAMI</p>
+
+    <div class="kontak-container">
+      <div class="kontak-form">
+        <form>
+          <div class="mb-3">
+            <label>Email address</label>
+            <input type="email" class="form-control" placeholder="name@example.com">
+          </div>
+          <div class="mb-3">
+            <label>ISI PESAN</label>
+            <textarea class="form-control" rows="3" placeholder="Tulis pesan Anda..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-warning mt-3">KIRIM</button>
+        </form>
+      </div>
+
+      <div class="kontak-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d991.3243944625991!2d106.99147286961774!3d-6.3555121667393975!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e698c22161d4051%3A0x7a0a35b288779341!2sSMKN%202%20Kota%20Bekasi!5e0!3m2!1sen!2sid!4v1760407004934!5m2!1sen!2sid"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© Toko COMIGO. Semua Hak Dilindungi.</p>
+    <p><a href="#">COMIGO.com</a> | <span style="color: gold;">TERIMAKASIH</span></p>
+    <p id="waktu"></p>
+  </footer>
+
+  <!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+
+    // Waktu otomatis di footer
+    const waktuElem = document.getElementById('waktu');
+    setInterval(() => {
+      const now = new Date();
+      waktuElem.textContent = now.toLocaleString('id-ID', { dateStyle: 'full', timeStyle: 'medium' });
+    }, 1000);
+
+    // Login check
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (!loggedInUser) {
+      window.location.href = "login.html";
+    }
+
+    // Logout function
+    function logout() {
+      localStorage.removeItem('loggedInUser');
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
